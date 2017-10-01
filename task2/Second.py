@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 points = list()
+curve = list()
 window = 0
 
 
@@ -17,6 +18,28 @@ def createPoints(count, start, stop, step=0.1):
         points.append([choice(listOfNumbers), choice(listOfNumbers)])
 
 
+def get_middle_dot(coords):
+    return [0.5*(coords[0][0]+coords[1][0]), 0.5*(coords[0][1]+coords[1][1])]
+
+
+def beizer4(my_list):
+    global curve
+    a = 20
+    k = [i / a for i in range(0, a+1)]
+    for t in k:
+        x = (1-t)**3*my_list[0][0] + 3*(1-t)**2*t*my_list[1][0] + 3*(1-t)*t**2*my_list[2][0] + t**3*my_list[3][0]
+        y = (1 - t) ** 3 * my_list[0][1] + 3 * (1 - t) ** 2 * t * my_list[1][1] + 3 * (1 - t) * t ** 2 * my_list[
+            2][1] + t ** 3 * my_list[3][1]
+        curve.append([x,y])
+
+
+def draw_polyline(coords):
+    for x in range(len(coords)):
+        if x + 1 != len(coords):
+            glVertex2d(coords[x][0], coords[x][1])
+            glVertex2d(coords[x + 1][0], coords[x + 1][1])
+
+
 def draw():  # ondraw is called all the time
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # clear the screen
     glLoadIdentity()  # reset position
@@ -24,6 +47,7 @@ def draw():  # ondraw is called all the time
 
     glScalef(0.1, 0.1, 1)
 
+    glLineWidth(1)
     glBegin(GL_LINES)
 
     glColor3f(1, 0, 1)
@@ -34,23 +58,37 @@ def draw():  # ondraw is called all the time
     glVertex2d(0, -1)
     glVertex2d(0, 1)
 
-    glColor3f(0,0,0)
-    for x in range(len(points)):
-        if x+1 != len(points):
-            glVertex2d(points[x][0], points[x][1])
-            glVertex2d(points[x+1][0], points[x+1][1])
-
+    glColor3f(0.5,0.5,0.5)
+    draw_polyline(points)
     glEnd()
 
+    glLineWidth(2)
+    glBegin(GL_LINES)
+    glColor3f(1, 0, 0)
+    draw_polyline(curve)
 
-
+    glEnd()
 
     glutSwapBuffers()  # important for double buffering
 
 
 def main():
-    createPoints(8,-9,9)
+    global curve
+    createPoints(10,-9,9)
     print(points)
+
+    super_arr = points[:3]+[get_middle_dot(points[2:4])]
+    print(super_arr)
+    beizer4(super_arr)
+    super_arr = [get_middle_dot(points[2:4])] + points[3:5] + [get_middle_dot(points[4:6])]
+    print(super_arr)
+    beizer4(super_arr)
+    super_arr = [get_middle_dot(points[4:6])] + points[5:7] + [get_middle_dot(points[6:8])]
+    print(super_arr)
+    beizer4(super_arr)
+    super_arr = [get_middle_dot(points[6:8])] + points[7:10]
+    print(super_arr)
+    beizer4(super_arr)
 
     glutInit()  # initialize glut
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
