@@ -33,11 +33,16 @@ def beizer4(my_list):
         curve.append([x,y])
 
 
+def drawPoints(points):
+    for point in points:
+        glVertex2dv(point)
+
+
 def draw_polyline(coords):
     for x in range(len(coords)):
         if x + 1 != len(coords):
-            glVertex2d(coords[x][0], coords[x][1])
-            glVertex2d(coords[x + 1][0], coords[x + 1][1])
+            glVertex2dv(coords[x])
+            glVertex2dv(coords[x + 1])
 
 
 def draw():  # ondraw is called all the time
@@ -60,6 +65,20 @@ def draw():  # ondraw is called all the time
 
     glColor3f(0.5,0.5,0.5)
     draw_polyline(points)
+    glEnd()
+
+    glPointSize(5)
+    glBegin(GL_POINTS)
+    glColor3f(0, 0, 1)
+    drawPoints(points)
+    glEnd()
+
+    glPointSize(8)
+    glBegin(GL_POINTS)
+    glColor3f(0.155, 0, 0.211)
+    glVertex2dv(get_middle_dot(points[2:4]))
+    glVertex2dv(get_middle_dot(points[4:6]))
+    glVertex2dv(get_middle_dot(points[6:8]))
     glEnd()
 
     glLineWidth(2)
