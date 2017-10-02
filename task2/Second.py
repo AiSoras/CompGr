@@ -106,7 +106,7 @@ def main():
     beizer4(super_arr)
 
     if countOfPoints > 4:
-        for i in range(2, countOfPoints - 3, 2):
+        for i in range(4, countOfPoints - 3, 2):
             super_arr = [get_middle_dot(points[i - 2:i])] + points[i - 1:i + 1] + [get_middle_dot(points[i:i + 2])]
             beizer4(super_arr)
         super_arr = [get_middle_dot(points[countOfPoints - 4:countOfPoints - 2])] + points[countOfPoints - 3:countOfPoints]
