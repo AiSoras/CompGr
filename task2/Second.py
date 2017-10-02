@@ -1,6 +1,5 @@
 from random import choice
 from OpenGL.GL import *
-from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 points = list()
@@ -30,12 +29,25 @@ def beizer4(my_list):
         x = (1-t)**3*my_list[0][0] + 3*(1-t)**2*t*my_list[1][0] + 3*(1-t)*t**2*my_list[2][0] + t**3*my_list[3][0]
         y = (1 - t) ** 3 * my_list[0][1] + 3 * (1 - t) ** 2 * t * my_list[1][1] + 3 * (1 - t) * t ** 2 * my_list[
             2][1] + t ** 3 * my_list[3][1]
-        curve.append([x,y])
+        curve.append([x, y])
 
 
-def drawPoints(points):
+def drawPoints():
+    global points
+
+    glPointSize(5)
+    glBegin(GL_POINTS)
+    glColor3f(0, 0, 1)
     for point in points:
         glVertex2dv(point)
+    glEnd()
+
+    glPointSize(8)
+    glBegin(GL_POINTS)
+    glColor3f(0.155, 0, 0.211)
+    for i in range(2, 7, 2):
+        glVertex2dv(get_middle_dot(points[i:i+2]))
+    glEnd()
 
 
 def draw_polyline(coords):
@@ -67,33 +79,20 @@ def draw():  # ondraw is called all the time
     draw_polyline(points)
     glEnd()
 
-    glPointSize(5)
-    glBegin(GL_POINTS)
-    glColor3f(0, 0, 1)
-    drawPoints(points)
-    glEnd()
-
-    glPointSize(8)
-    glBegin(GL_POINTS)
-    glColor3f(0.155, 0, 0.211)
-    glVertex2dv(get_middle_dot(points[2:4]))
-    glVertex2dv(get_middle_dot(points[4:6]))
-    glVertex2dv(get_middle_dot(points[6:8]))
-    glEnd()
-
     glLineWidth(2)
     glBegin(GL_LINES)
     glColor3f(1, 0, 0)
     draw_polyline(curve)
-
     glEnd()
+
+    drawPoints()
 
     glutSwapBuffers()  # important for double buffering
 
 
 def main():
-    global curve
-    createPoints(10,-9,9)
+    global curve, window
+    createPoints(10, -9, 9)
     print(points)
 
     super_arr = points[:3]+[get_middle_dot(points[2:4])]
