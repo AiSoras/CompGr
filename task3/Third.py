@@ -88,7 +88,7 @@ def initPlane(vertices):
     k = [i / a for i in range(0, a + 1)]
     point = [0, 0, 0]
 
-    glPointSize(3)
+    glPointSize(2)
     glBegin(GL_POINTS)
     glColor3f(0, 0, 1)
     for u in k:
@@ -150,13 +150,13 @@ def initGraphicFrame():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(640, 480)
-    glutInitWindowPosition(200, 200)
+    glutInitWindowSize(1000, 800)
+    glutInitWindowPosition(500, 100)
 
     window = glutCreateWindow(b"T3")
     #graphicFrame = glutCreateSubWindow(window, 0, 0, 600, 800)
 
-    glutSetWindow(graphicFrame)
+    #glutSetWindow(graphicFrame)
     glutDisplayFunc(draw3DScene)
     glutIdleFunc(draw3DScene)
     glutKeyboardFunc(keyPressed)
