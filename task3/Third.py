@@ -6,10 +6,11 @@ from random import choice
 
 window = 0
 
-verticesOriginal = ((0, 0, 1), (1, 1, 1), (1, 0, 0), (0, 1, 0))
 points = []
+rotatedPoints = []
+angle = 0
 
-eye = (2, 3, 5)
+eye = (6, 6, 6)
 
 
 def createPoints(count, start, stop, step=0.1):
@@ -45,6 +46,7 @@ def keyPressed(bkey, x, y):
             eye = (eye[0], eye[1], eye[2] + 1)
     except:
         pass
+    glutPostRedisplay()
 
 
 def initPlane(vertices):
@@ -108,22 +110,36 @@ def init_axes():
 
     glEnd()
 
+
 def draw3DScene():
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     glLoadIdentity()
 
     gluLookAt(eye[0], eye[1], eye[2], 0, 0, 0, 0, 1, 0)
-    # glTranslatef(0.0, 0.0, -6.0)
 
     init_axes()
-    #initPlane(verticesOriginal)
     initPlane(points)
 
     glutSwapBuffers()
 
 
-def initGraphicFrame():
+def drawRotated3DScene():
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+    glLoadIdentity()
+
+    gluLookAt(eye[0], eye[1], eye[2], 0, 0, 0, 0, 1, 0)
+
+    init_axes()
+    initPlane(rotatedPoints)
+
+    glutSwapBuffers()
+
+
+def initWindow():
     global window
 
     glutInit(sys.argv)
@@ -134,9 +150,8 @@ def initGraphicFrame():
     window = glutCreateWindow(b"T3")
 
     glutDisplayFunc(draw3DScene)
-    glutIdleFunc(draw3DScene)
     glutKeyboardFunc(keyPressed)
-    initGL(1000, 500)
+    initGL(500, 500)
 
 
 def matrixMultiplication(matrixOne, matrixTwo):
@@ -164,21 +179,20 @@ def initSubWindow():
     glutInitWindowPosition(1000, 100)
     SubWindow = glutCreateWindow(b"Angle")
     glutSetWindow(SubWindow)
-    glutDisplayFunc(draw3DScene)
-    glutIdleFunc(draw3DScene)
+    glutDisplayFunc(drawRotated3DScene)
     glutKeyboardFunc(keyPressed)
     initGL(500, 500)
 
 
 def main():
-    global points
+    global points, rotatedPoints
     createPoints(4, -3, 3)
     angle = int(input("Angle of rotation about the OX axis:\n>>> "))
-    initGraphicFrame()
+    initWindow()
     print(points)
-    if (angle!=0):
-        points = rotateOX(angle, points)
-        print(points)
+    if angle:
+        rotatedPoints = rotateOX(angle, points)
+        print(rotatedPoints)
         initSubWindow()
     glutMainLoop()
 
