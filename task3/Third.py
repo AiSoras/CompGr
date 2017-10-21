@@ -52,7 +52,6 @@ def initPlane(vertices):
     k = [i / a for i in range(0, a + 1)]
     point = [0, 0, 0]
 
-    glPointSize(2)
     glBegin(GL_LINE_STRIP)
     glColor3f(0, 0, 1)
     for u in k:
@@ -82,19 +81,32 @@ def initGL(Width, Height):
 def init_axes():
     glBegin(GL_LINES)
     glColor3f(1, 0, 0)
-    glVertex3f(-100, 0, 0)
-    glVertex3f(100, 0, 0)
+    glVertex3f(-4, 0, 0)
+    glVertex3f(4, 0, 0)
 
     glColor3f(0, 1, 0)
-    glVertex3f(0, -100, 0)
-    glVertex3f(0, 100, 0)
+    glVertex3f(0, -4, 0)
+    glVertex3f(0, 4, 0)
 
     glColor3f(0, 0, 1)
-    glVertex3f(0, 0, -100)
-    glVertex3f(0, 0, 100)
+    glVertex3f(0, 0, -4)
+    glVertex3f(0, 0, 4)
 
     glEnd()
 
+    glPointSize(7)
+    glBegin(GL_POINTS)
+
+    glColor3f(1, 0, 0)
+    glVertex3f(4, 0, 0)
+
+    glColor3f(0, 1, 0)
+    glVertex3f(0, 4, 0)
+
+    glColor3f(0, 0, 1)
+    glVertex3f(0, 0, 4)
+
+    glEnd()
 
 def draw3DScene():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
