@@ -50,22 +50,28 @@ def keyPressed(bkey, x, y):
 
 
 def initPlane(vertices):
-    a = 20
+    a = 15
     k = [i / a for i in range(0, a + 1)]
     point = [0, 0, 0]
 
-    glBegin(GL_LINE_STRIP)
-    glColor3f(0, 0, 1)
     for u in k:
+        glBegin(GL_LINE_STRIP)
+        glColor3f(0, 0, 1)
         for w in k:
             for i in range(3):
-                point[i] = (1 - u) * (1 - w) * vertices[0][i] + u * (1 - w) * vertices[1][i] + (1 - u) * w * \
-                                                                                               vertices[2][i] + u * w * \
-                                                                                                                vertices[
-                                                                                                                    3][
-                                                                                                                    i]
+                point[i] = (1 - u) * (1 - w) * vertices[0][i] + (1 - u) * w * vertices[1][i] + u * (1 - w) * vertices[2][i] + u * w * vertices[3][i]
             glVertex3dv(point)
-    glEnd()
+        glEnd()
+
+    for w in k:
+        glBegin(GL_LINE_STRIP)
+        glColor3f(0, 0, 1)
+        for u in k:
+            for i in range(3):
+                point[i] = (1 - u) * (1 - w) * vertices[0][i] + (1 - u) * w * vertices[1][i] + u * (1 - w) * vertices[2][i] + u * w * vertices[3][i]
+            glVertex3dv(point)
+        glEnd()
+
 
 
 def initGL(Width, Height):
