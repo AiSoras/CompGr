@@ -95,6 +95,7 @@ def CohenSutherlandAlgorithm(pointOne, pointTwo):
     ke = bitCode(pointTwo)  # k end
     if (kb | ke) == 0:  # Лежит полностью
         glColor3f(1, 0, 0)  # Красный
+
         glVertex2fv(pointOne)
         glVertex2fv(pointTwo)
     elif kb & ke:  # За пределами
@@ -109,26 +110,22 @@ def CohenSutherlandAlgorithm(pointOne, pointTwo):
                 pointOne[1], pointTwo[1] = pointTwo[1], pointOne[1]
             if kb & LEFT:
                 x = xmin
-                t = (x - pointOne[0]) / checkZero(pointTwo[0], pointOne[0])
-                y = pointOne[1] + (pointTwo[1] - pointOne[1]) * t
+                y = pointOne[1] + (pointTwo[1] - pointOne[1]) * (x - pointOne[0]) / checkZero(pointTwo[0], pointOne[0])
             elif kb & RIGHT:
                 x = xmax
-                t = (x - pointOne[0]) / checkZero(pointTwo[0], pointOne[0])
-                y = pointOne[1] + (pointTwo[1] - pointOne[1]) * t
+                y = pointOne[1] + (pointTwo[1] - pointOne[1]) * (x - pointOne[0]) / checkZero(pointTwo[0], pointOne[0])
             elif kb & TOP:
                 y = ymax
-                t = (y - pointOne[1]) / checkZero(pointTwo[1], pointOne[1])
-                x = pointOne[0] + (pointTwo[0] - pointOne[0]) * t
+                x = pointOne[0] + (pointTwo[0] - pointOne[0]) * (y - pointOne[1]) / checkZero(pointTwo[1], pointOne[1])
             else:
                 y = ymin
-                t = (y - pointOne[1]) / checkZero(pointTwo[1], pointOne[1])
-                x = pointOne[0] + (pointTwo[0] - pointOne[0]) * t
+                x = pointOne[0] + (pointTwo[0] - pointOne[0]) * (y - pointOne[1]) / checkZero(pointTwo[1], pointOne[1])
 
             glColor3f(0, 0, 1)  # Синий
             glVertex2fv(pointOne)
             glVertex2f(x, y)
             pointOne = [x, y]
-            kb = 0
+            kb = bitCode(pointOne)
 
         glColor3f(1, 0, 0)  # Красный
         glVertex2fv(pointOne)
@@ -194,7 +191,7 @@ def initSubWindow():
 
 def main():
     global points
-    createPoints(20, -8, 8)
+    createPoints(30, -8, 8)
     initWindow()
     print(points)
     initSubWindow()
