@@ -191,7 +191,7 @@ def initSubWindow():
 
 def main():
     global points
-    createPoints(30, -8, 8)
+    createPoints(14, -8, 8)
     initWindow()
     print(points)
     initSubWindow()
