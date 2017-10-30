@@ -137,7 +137,7 @@ def initWindow():
     glutInitWindowSize(800, 800)
     glutInitWindowPosition(500, 100)
 
-    window = glutCreateWindow(b"T3")
+    window = glutCreateWindow(b"Task5")
 
     glutDisplayFunc(draw3DScene)
     glutKeyboardFunc(keyPressed)
