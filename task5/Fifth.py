@@ -1,8 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from math import cos, sin, radians
-from random import choice
 
 window = 0
 
@@ -20,10 +18,8 @@ point = [0, 0, 0]
 
 def keyPressed(bkey, x, y):
     global eye
-    # Convert bytes object to string
     try:
         key = bkey.decode("utf-8")
-        # Allow to quit by pressing 'Esc' or 'q'
         if key == chr(27):
             sys.exit()
         if key == 'w':
