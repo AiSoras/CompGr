@@ -51,8 +51,9 @@ def initPlane(vertices):
     k = [i / a for i in range(0, a + 1)]
     pointOne = [0, 0, 0]
     pointTwo = [0, 0, 0]
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glPolygonMode(GL_FRONT, GL_FILL)
-    glPolygonMode(GL_BACK, GL_LINE)
     for u in k[:a]:
         glBegin(GL_QUAD_STRIP)
         glColor3f(0, 0, 1)
@@ -64,7 +65,19 @@ def initPlane(vertices):
             glVertex3dv(pointOne)
             glVertex3dv(pointTwo)
         glEnd()
-
+    glCullFace(GL_BACK);
+    glPolygonMode(GL_BACK, GL_FILL)
+    for u in k[:a]:
+        glBegin(GL_QUAD_STRIP)
+        glColor3f(1, 0, 0)
+        ua = u + 1 / a
+        for w in k:
+            for i in range(3):
+                pointOne[i] = (1 - u) * (1 - w) * vertices[0][i] + (1 - u) * w * vertices[1][i] + u * (1 - w) * vertices[2][i] + u * w * vertices[3][i]
+                pointTwo[i] = (1 - ua) * (1 - w) * vertices[0][i] + (1 - ua) * w * vertices[1][i] + ua * (1 - w) * vertices[2][i] + ua * w * vertices[3][i]
+            glVertex3dv(pointOne)
+            glVertex3dv(pointTwo)
+        glEnd()
 
 def initGL(Width, Height):
     glClearColor(1.0, 1.0, 1.0, 1.0)
